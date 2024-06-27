@@ -30,39 +30,18 @@ class Equipo(models.Model):
         return self.codigo
 
 
+class TipoMantenimiento(models.Model):
+    nombre = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.nombre
+
 class Mantenimiento(models.Model):
-    TIPO_MANTENIMIENTO_CHOICES = [
-        ('preventivo', 'Preventivo'),
-        ('correctivo', 'Correctivo')
-    ]
+    fechaHoraMantenimiento = models.DateTimeField(verbose_name='Fecha y Hora de Mantenimiento')
+    descripcion = models.TextField(blank=True, null=True, verbose_name='Mantenimiento Realizado')
 
-    fechaHoraMantenimiento = models.DateTimeField(
-        verbose_name='Fecha y Hora de Mantenimiento')
-    descripcion = models.TextField(
-        blank=True, null=True, verbose_name='Mantenimiento Realizado')
-
-    tipoMantenimiento = models.CharField(
-        max_length=100,
-        verbose_name='Tipo de Mantenimiento',
-        help_text='Seleccione uno o ambos tipos separados por comas (,). Ejemplo: "preventivo, correctivo"',
-        choices=TIPO_MANTENIMIENTO_CHOICES,
-    )
-
-    equipoID = models.ForeignKey(
-        Equipo, related_name='mantenimientos', on_delete=models.CASCADE)
-
-    def clean(self):
-        # Validar que tipoMantenimiento contenga opciones válidas
-        tipo_choices = [choice[0]
-                        for choice in self.TIPO_MANTENIMIENTO_CHOICES]
-        selected_choices = [choice.strip() for choice in self.tipoMantenimiento.split(
-            ',') if choice.strip()]
-
-        for choice in selected_choices:
-            if choice not in tipo_choices:
-                raise ValidationError(
-                    f'{choice} no es una opción válida para Tipo de Mantenimiento. Seleccione entre "preventivo" y "correctivo".'
-                )
+    tiposMantenimiento = models.ManyToManyField(TipoMantenimiento, verbose_name='Tipos de Mantenimiento')
+    equipoID = models.ForeignKey(Equipo, related_name='mantenimientos', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.fechaHoraMantenimiento.strftime('%Y-%m-%d %H:%M:%S')
