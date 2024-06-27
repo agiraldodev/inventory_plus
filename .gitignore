@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# Runtime directories
+__pycache__/
+
+# Python env
+venv/
+env/
+
+# Editor directories and files
+.vscode/
+.idea/
+
+# Mac OSX specific files
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Environment variable files
+.env
+
+# Local configuration files
+local_settings.py
+
+# Django specific
+*.sqlite3
+*.pyc
+
+# Ignore migrations except __init__.py
+**/migrations/*.py
+**/migrations/*.pyc
