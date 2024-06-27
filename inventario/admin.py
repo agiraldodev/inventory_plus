@@ -18,7 +18,7 @@ class MantenimientoAdmin(admin.ModelAdmin):
         'fechaHoraMantenimiento',
         'equipoID'
     )
-    filter_horizontal = ('tiposMantenimiento',)  # Agregar filtros horizontales para un mejor manejo
+    filter_horizontal = ('tiposMantenimiento',)
 
     formfield_overrides = {
         models.ManyToManyField: {'widget': SelectMultiple(attrs={
@@ -30,7 +30,8 @@ class MantenimientoAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        obj.save()  # Guardar el objeto Mantenimiento primero
+        obj.save()
 
 admin.site.register(Equipo, EquipoAdmin)
 admin.site.register(Mantenimiento, MantenimientoAdmin)
+admin.site.register(TipoMantenimiento)
